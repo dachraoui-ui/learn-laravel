@@ -49,24 +49,13 @@ class UserController extends Controller
 
     }
 
-    public function logout(){
-
+    public function logout(Request $request){
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logged out successfully'], 200);
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 
 
 
@@ -85,4 +74,24 @@ class UserController extends Controller
         $tasks = User::findOrFail($id)->tasks;
         return response()->json($tasks, 200);
     }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

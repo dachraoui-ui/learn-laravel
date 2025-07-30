@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UpdateProfileRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -27,7 +28,24 @@ class UserController extends Controller
 
     }
 
-    public function login(){
+    public function login(Request $request){
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string|min:8',
+        ]);
+
+        if(!Auth::attempt($request->only('email', 'password'))){
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+        $user = User::where('email', $request->email)->FirstOrFail();
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        return response()->json(['message' =>
+        'Login Successfully',
+         'user' => $user,
+         'token' => $token]
+         , 201);
+
 
     }
 

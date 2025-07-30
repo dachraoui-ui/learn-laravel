@@ -25,7 +25,6 @@ class CreateTaskRequest extends FormRequest
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'priority' => ['required', 'integer', 'min:1', 'max:5'],
-            'user_id' => ['required', 'exists:users,id'], // Ensure the user exists
         ];
     }
 }

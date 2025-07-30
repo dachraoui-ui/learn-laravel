@@ -5,17 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateTaskRequest;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
     public function store( CreateTaskRequest $request){
 
-        $task = Task::create($request->validated());
+        $user_id = Auth::user()->id;
+        $validatedData = $request->validated();
+        $validatedData['user_id'] = $user_id; // Set the authenticated user's ID
+        $task = Task::create($validatedData);
         return response()->json($task, 201);
     }
 
     public function index(){
-        $tasks = Task::all();
+
+        $tasks= Auth::user()->tasks;
         return response()->json($tasks, 200);
     }
 
@@ -38,7 +43,14 @@ class TaskController extends Controller
         }
     }
     public function update(Request $request, $id){
+
+        $user_id = Auth::user()->id;
         $task = Task::findOrFail($id);
+
+        if ($task->user_id !== $user_id) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
         $valid = $request->validate([
             'title' => ['sometimes', 'string', 'max:255'],
             'description' => ['sometimes', 'nullable', 'string'],
@@ -70,7 +82,7 @@ class TaskController extends Controller
         return response()->json($categories, 200);
     }
 
-    
+
 
 
 }

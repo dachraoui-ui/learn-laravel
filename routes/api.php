@@ -17,24 +17,14 @@ Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
-
-
-
-
-
-
-
-
-
-
-
 /* Route::post('/tasks', [TaskController::class, 'store']);
 Route::get('/tasks', [TaskController::class, 'index']);
 Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
 Route::get('/tasks/{id}', [TaskController::class, 'show']);
 Route::put('/tasks/{id}', [TaskController::class, 'update']); */
+Route::middleware('auth:sanctum')->group(function (){
 
-Route::apiResource('tasks', TaskController::class);
+Route::apiResource('tasks', TaskController::class)->middleware('auth:sanctum');
 Route::post('profiles',[ProfileController::class, 'store']);
 
 // the first way using profile controller to retrieve a profile by user ID
@@ -56,4 +46,6 @@ Route::post('tasks/{taskId}/categories', [TaskController::class, 'addCategoriesT
 
 Route::get('tasks/{taskId}/categories', [TaskController::class, 'getTaskCategories']);
 Route::get('categories/{categoryId}/tasks', [CategoryController::class, 'getCategorieTasks']);
+
+});
 

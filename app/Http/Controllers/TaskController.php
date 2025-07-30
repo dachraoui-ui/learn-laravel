@@ -24,6 +24,13 @@ class TaskController extends Controller
         return response()->json($tasks, 200);
     }
 
+    public function getAllTasks(){
+
+        $tasks= Auth::user()->tasks;
+        return response()->json($tasks, 200);
+    }
+
+
     public function show($id){
         $task = Task::find($id);
         if (!$task) {
@@ -50,7 +57,7 @@ class TaskController extends Controller
         if ($task->user_id !== $user_id) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-        
+
         $valid = $request->validate([
             'title' => ['sometimes', 'string', 'max:255'],
             'description' => ['sometimes', 'nullable', 'string'],

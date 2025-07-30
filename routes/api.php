@@ -24,26 +24,30 @@ Route::get('/tasks/{id}', [TaskController::class, 'show']);
 Route::put('/tasks/{id}', [TaskController::class, 'update']); */
 Route::middleware('auth:sanctum')->group(function (){
 
-Route::apiResource('tasks', TaskController::class)->middleware('auth:sanctum');
-Route::post('profiles',[ProfileController::class, 'store']);
 
+Route::prefix('profiles')->group(function (){
+
+Route::post('',[ProfileController::class, 'store']);
 // the first way using profile controller to retrieve a profile by user ID
-Route::get('profiles/{id}', [ProfileController::class, 'show']);
-Route::put('profiles/{id}', [ProfileController::class, 'update']);
+Route::get('/{id}', [ProfileController::class, 'show']);
+Route::put('/{id}', [ProfileController::class, 'update']);
+});
+
 
 // the second way using user controller to retrieve a profile by user ID
 
 Route::get('users/{id}/profile', [UserController::class, 'getProfile']);
 Route::put('users/{id}/profile', [UserController::class, 'updateProfile']);
 
+
+Route::apiResource('tasks', TaskController::class);
+
+Route::get('/task/all',[TaskController::class, 'getAllTasks']);
 Route::get('/users/{id}/tasks', [UserController::class,'getUserTasks']);
 Route::get('/task/{id}/user', [TaskController::class,'getTaskUser']);
 
 Route::post('/categories', [CategoryController::class, 'store']);
-
-
 Route::post('tasks/{taskId}/categories', [TaskController::class, 'addCategoriesToTask']);
-
 Route::get('tasks/{taskId}/categories', [TaskController::class, 'getTaskCategories']);
 Route::get('categories/{categoryId}/tasks', [CategoryController::class, 'getCategorieTasks']);
 

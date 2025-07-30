@@ -1,0 +1,6 @@
+services:
+  firstapp:
+    image: firstapp
+    build:
+      context: .
+      dockerfile: ./Dockerfile

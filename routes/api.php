@@ -42,7 +42,7 @@ Route::put('users/{id}/profile', [UserController::class, 'updateProfile']);
 
 Route::apiResource('tasks', TaskController::class);
 
-Route::get('/task/all',[TaskController::class, 'getAllTasks']);
+Route::get('/task/all',[TaskController::class, 'getAllTasks'])->middleware('CheckUser');
 Route::get('/users/{id}/tasks', [UserController::class,'getUserTasks']);
 Route::get('/task/{id}/user', [TaskController::class,'getTaskUser']);
 

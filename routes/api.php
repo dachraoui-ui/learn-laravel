@@ -46,6 +46,8 @@ Route::get('/task/all',[TaskController::class, 'getAllTasks'])->middleware('Chec
 Route::get('/users/{id}/tasks', [UserController::class,'getUserTasks']);
 Route::get('/task/{id}/user', [TaskController::class,'getTaskUser']);
 
+Route::get('/task/ordered', [TaskController::class,'getTasksByPriority']);
+
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::post('tasks/{taskId}/categories', [TaskController::class, 'addCategoriesToTask']);
 Route::get('tasks/{taskId}/categories', [TaskController::class, 'getTaskCategories']);

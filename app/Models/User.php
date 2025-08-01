@@ -53,7 +53,8 @@ class User extends Authenticatable
     }
 
     // one to many
-    public function tasks(){
+
+    public function tasks() {
         return $this->hasMany(Task::class);
     }
 }

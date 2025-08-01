@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CreateTaskRequest;
 use Illuminate\Support\Facades\Auth;
 
+
 class TaskController extends Controller
 {
     public function store( CreateTaskRequest $request){
@@ -95,6 +96,27 @@ class TaskController extends Controller
         $categories = Task::findOrFail($taskId)->categories;
         return response()->json($categories, 200);
     }
+
+
+
+    public function AddToFavorites($taskId){
+        Task::findOrFail($taskId);
+        Auth::user()->favoriteTasks()->syncWithoutDetaching($taskId);
+        return response()->json(['message' => 'Task added to favorites'], 200);
+    }
+
+    public function RemoveFromFavorites($taskId){
+         Task::findOrFail($taskId);
+        Auth::user()->favoriteTasks()->detach($taskId);
+        return response()->json(['message' => 'Task removed from favorites'], 200);
+
+    }
+
+    public function getFavoriteTasks(){
+        $tasks = Auth::user()->favoriteTasks;
+        return response()->json($tasks, 200);
+    }
+
 
 
 

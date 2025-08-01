@@ -45,8 +45,14 @@ Route::apiResource('tasks', TaskController::class);
 Route::get('/task/all',[TaskController::class, 'getAllTasks'])->middleware('CheckUser');
 Route::get('/users/{id}/tasks', [UserController::class,'getUserTasks']);
 Route::get('/task/{id}/user', [TaskController::class,'getTaskUser']);
-
 Route::get('/task/ordered', [TaskController::class,'getTasksByPriority']);
+
+Route::post('/task/{id}/favorite', [TaskController::class, 'AddToFavorites']);
+Route::delete('/task/{id}/favorite', [TaskController::class, 'RemoveFromFavorites']);
+Route::get('/task/favorites', [TaskController::class, 'getFavoriteTasks']);
+
+
+
 
 Route::post('/categories', [CategoryController::class, 'store']);
 Route::post('tasks/{taskId}/categories', [TaskController::class, 'addCategoriesToTask']);

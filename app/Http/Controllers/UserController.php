@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,9 +56,6 @@ class UserController extends Controller
     }
 
 
-    
-
-
 
     public function getProfile($id){
         $profile = User::find($id)->profile()->firstOrFail();
@@ -74,6 +72,19 @@ class UserController extends Controller
         $tasks = User::findOrFail($id)->tasks;
         return response()->json($tasks, 200);
     }
+
+
+    public function GetUser(){
+        $user_id = Auth::user()->id;
+        $userData = User::with('profile')->findOrFail($user_id);
+        return new UserResource($userData);
+    }
+
+    public function getAllUsers(){
+        $userData = User::with('profile')->get();
+        return UserResource::collection($userData);
+    }
+
 
 }
 

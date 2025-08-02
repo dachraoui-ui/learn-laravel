@@ -38,6 +38,8 @@ Route::put('/{id}', [ProfileController::class, 'update']);
 
 Route::get('users/{id}/profile', [UserController::class, 'getProfile']);
 Route::put('users/{id}/profile', [UserController::class, 'updateProfile']);
+Route::get('/user' , [UserController::class, 'GetUser']);
+Route::get('/users',[UserController::class, 'getAllUsers']);
 
 
 Route::apiResource('tasks', TaskController::class);

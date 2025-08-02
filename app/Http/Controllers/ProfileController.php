@@ -13,6 +13,16 @@ class ProfileController extends Controller
     public function store(CreateProfileRequest $request)
     {
         $user_id = Auth::user()->id;
+
+
+        // Check if profile already exists for this user
+        if (Profile::where('user_id', $user_id)->exists()) {
+            return response()->json([
+                'message' => 'Profile already exists for this user.',
+                'error' => 'profile_exists'
+            ], 409);
+        }
+        
         $validated = $request->validated();
         $validated['user_id'] = $user_id; // Set the authenticated user's ID
 
@@ -20,6 +30,7 @@ class ProfileController extends Controller
             $path = $request->file('profile_picture')->store('my photo', 'public');
             $validated['profile_picture'] = $path;
         }
+
 
         $profile = Profile::create($validated);
         return response()->json(['message' => 'Profile created successfully', 'profile' => $profile], 201);

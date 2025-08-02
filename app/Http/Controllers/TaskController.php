@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use App\Http\Requests\CreateTaskRequest;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -48,15 +49,26 @@ class TaskController extends Controller
     }
 
     public function destroy($id){
-        $task = Task::findOrFail($id);
-        if (!$task){
-            return response()->json(['message' => 'Task not found'], 404);
-        }
-        else{
+
+        try{
+            $task = Task::findOrFail($id);
             $task->delete();
-            return response()->json(['message' =>'Task deleted'], 204);
+            return response()->json(['message'=>'Task deleted successfully']);
+        }catch(Exception $e){
+            return response()->json(
+            ['error' => 'Task not found'
+            ,'details' => $e->getMessage()]
+            , 404);
+
         }
+
     }
+
+
+
+
+
+
     public function update(Request $request, $id){
 
         $user_id = Auth::user()->id;

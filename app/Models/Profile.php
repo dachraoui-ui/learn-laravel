@@ -12,6 +12,7 @@ class Profile extends Model
         'address',
         'date_of_birth',
         'bio',
+        'profile_picture'
     ];
     protected $guarded = ['id'];
     protected $table = 'profiles';

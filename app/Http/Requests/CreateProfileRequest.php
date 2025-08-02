@@ -22,11 +22,12 @@ class CreateProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => ['required', 'exists:users,id'],
+            
             'phone' => ['required', 'string'],
             'address' => ['nullable', 'string'],
             'date_of_birth' => ['nullable', 'date'],
             'bio' => ['nullable', 'string'],
+            'profile_picture' => ['required', 'image' , 'mimes:png,jpg,jpeg,gif','max:2048'],
         ];
     }
 }
